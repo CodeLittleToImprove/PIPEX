@@ -54,22 +54,23 @@ int	main(int argc, char *argv[], char *env[])
 {
 	int		pipe_fd[2];
 	pid_t	process_id;
-	int	status;
+	int		status;
 
 	if (argc != 5)
 		return (print_error_msg(ERR_INPUT));
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
 	process_id = fork();
+//	printf("PROCESS ID after fork %d\n", process_id);
 	if (process_id == -1)
 		print_error_msg_and_exit(ERR_FORK);
 	if (process_id == 0)
 	{
-		printf("Child PID0: %d\n", getpid());
+//		printf("Child PID0: %d\n", getpid());
 		execute_child_process(argv, pipe_fd, env);
-		printf("Child PID1: %d\n", getpid());
 	}
-	printf("Parent PID: %d\n", getpid());
+//	printf("Parent PID: %d\n", getpid());
+//	printf("PROCESS ID %d\n", process_id);
 	waitpid(process_id, &status, 0);
 	execute_parent_process(argv, pipe_fd, env);
 	return (0);
