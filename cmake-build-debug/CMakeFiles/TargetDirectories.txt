@@ -1,0 +1,3 @@
+/home/kunel/CLionProjects/PIPEX/cmake-build-debug/CMakeFiles/PIPEX.dir
+/home/kunel/CLionProjects/PIPEX/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kunel/CLionProjects/PIPEX/cmake-build-debug/CMakeFiles/rebuild_cache.dir
