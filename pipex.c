@@ -32,18 +32,21 @@ void	execute_child_process(char *argv[], int *pipe_fd, char *env[])
 {
 	int	input_fd;
 
-	input_fd = open_input_or_output_file(argv[1], "input");
+	input_fd = open_input_or_output_file(argv[1], INPUTFILE);
 	dup2(input_fd, STDIN_FILENO);
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[0]);
+//    close(pipe_fd[1]);
+//    close(input_fd);
 	exec(argv[2], env);
+    //add error handling closing fd and for dup fails
 }
 
 void	execute_parent_process(char *argv[], int *pipe_fd, char *env[])
 {
 	int	output_fd;
 
-	output_fd = open_input_or_output_file(argv[4], "output");
+	output_fd = open_input_or_output_file(argv[4], OUTPUTFILE);
 	dup2(output_fd, STDOUT_FILENO);
 	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[1]);
@@ -54,7 +57,7 @@ int	main(int argc, char *argv[], char *env[])
 {
 	int		pipe_fd[2];
 	pid_t	process_id;
-	int		status;
+//	int		status;
 
 	if (argc != 5)
 		return (print_error_msg(ERR_INPUT));
@@ -71,7 +74,7 @@ int	main(int argc, char *argv[], char *env[])
 	}
 //	printf("Parent PID: %d\n", getpid());
 //	printf("PROCESS ID %d\n", process_id);
-	waitpid(process_id, &status, 0);
+//	waitpid(process_id, &status, 0);
 	execute_parent_process(argv, pipe_fd, env);
 	return (0);
 }

@@ -25,15 +25,15 @@ void	ft_free_array(char **array)
 	free(array);
 }
 
-int	open_input_or_output_file(char *filename, char *in_or_out)
+int	open_input_or_output_file(char *filename, int in_or_out)
 {
 	int	ret;
 
 	ret = 0;
 
-	if (ft_strncmp(in_or_out, "input", ft_strlen(in_or_out)) == 0)
+	if (in_or_out == INPUTFILE)
 		ret = open(filename, O_RDONLY, 0777);
-	else if (ft_strncmp(in_or_out, "output", ft_strlen(in_or_out)) == 0)
+	else if (in_or_out == OUTPUTFILE)
 		ret = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	else
 		print_error_msg_and_exit(ERR_IMPOSSIBLE);

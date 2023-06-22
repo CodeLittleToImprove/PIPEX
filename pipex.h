@@ -32,10 +32,12 @@
 # define ERR_FORK "Fork Error"
 # define ERR_OPEN_FAIL  "Open file Error"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
+# define INPUTFILE 0
+# define OUTPUTFILE 1
 
 // util.c
 void	ft_free_array(char **array);
-int		open_input_or_output_file(char *filename, char *in_or_out);
+int		open_input_or_output_file(char *filename, int in_or_out);
 char	*get_env_value_by_name(char *envVarName, char **env);
 char	*get_exec_path(char *cmd, char **env);
 
