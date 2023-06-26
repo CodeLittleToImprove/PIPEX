@@ -50,29 +50,35 @@ void	execute_parent_process(char *argv[], int *pipe_fd, char *env[])
 	exec(argv[3], env);
 }
 
+// move this out in a single main and this file should be a executer.c or something
 int	main(int argc, char *argv[], char *env[])
 {
 	int		pipe_fd[2];
 	int		file_access_status;
+	int		cmd_index;
 	pid_t	process_id[2];
 //	int		status;
 
+	cmd_index = 2;
 	if (argc != 5)
 		return (print_error_msg(ERR_INPUT));
 	file_access_status = has_file_access(argv[1], argv[4]);
-	if(file_access_status == -1)
+	if (file_access_status == -1)
 		print_error_msg_and_exit(ERR_ACCESS_FAIL);
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
-	process_id = fork();
-//	printf("PROCESS ID after fork %d\n", process_id);
-	if (process_id == -1)
-		print_error_msg_and_exit(ERR_FORK);
-	if (process_id == 0)
+	while (cmd_index < argc - 2)
 	{
+		process_id[cmd_index - 2] = fork();
+//	printf("PROCESS ID after fork %d\n", process_id);
+		if (process_id[cmd_index - 2] == 0)
+			execute_child_process(argv, pipe_fd, env);
 //		printf("Child PID0: %d\n", getpid());
-		execute_child_process(argv, pipe_fd, env);
+		if (process_id[cmd_index - 2] == -1)
+			print_error_msg_and_exit(ERR_FORK);
 	}
+// start to work to refactor the child procesess
+
 //	printf("Parent PID: %d\n", getpid());
 //	printf("PROCESS ID %d\n", process_id);
 //	waitpid(process_id, &status, 0);
