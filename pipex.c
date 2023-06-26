@@ -53,11 +53,15 @@ void	execute_parent_process(char *argv[], int *pipe_fd, char *env[])
 int	main(int argc, char *argv[], char *env[])
 {
 	int		pipe_fd[2];
-	pid_t	process_id;
-	int		status;
+	int		file_access_status;
+	pid_t	process_id[2];
+//	int		status;
 
 	if (argc != 5)
 		return (print_error_msg(ERR_INPUT));
+	file_access_status = has_file_access(argv[1], argv[4]);
+	if(file_access_status == -1)
+		print_error_msg_and_exit(ERR_ACCESS_FAIL);
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
 	process_id = fork();
@@ -71,7 +75,7 @@ int	main(int argc, char *argv[], char *env[])
 	}
 //	printf("Parent PID: %d\n", getpid());
 //	printf("PROCESS ID %d\n", process_id);
-	waitpid(process_id, &status, 0);
+//	waitpid(process_id, &status, 0);
 	execute_parent_process(argv, pipe_fd, env);
 	return (0);
 }

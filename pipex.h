@@ -30,12 +30,15 @@
 # define ERR_CMD "Command not found\n"
 # define ERR_EXEC "Execve Error"
 # define ERR_FORK "Fork Error"
-# define ERR_OPEN_FAIL  "Open file Error"
+# define ERR_OPEN_FAIL "Open file Error"
+# define ERR_ACCESS_FAIL "Access file Error"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 
 // util.c
 void	ft_free_array(char **array);
 int		open_input_or_output_file(char *filename, char *in_or_out);
+int		has_file_access(const char *input_filename,
+			const char *output_filename);
 char	*get_env_value_by_name(char *envVarName, char **env);
 char	*get_exec_path(char *cmd, char **env);
 

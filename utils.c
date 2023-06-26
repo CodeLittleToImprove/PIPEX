@@ -32,15 +32,29 @@ int	open_input_or_output_file(char *filename, char *in_or_out)
 	ret = 0;
 
 	if (ft_strncmp(in_or_out, "input", ft_strlen(in_or_out)) == 0)
-		ret = open(filename, O_RDONLY, 0777);
+		ret = open(filename, O_RDONLY, 0666);
 	else if (ft_strncmp(in_or_out, "output", ft_strlen(in_or_out)) == 0)
-		ret = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		ret = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	else
 		print_error_msg_and_exit(ERR_IMPOSSIBLE);
 	if (ret == -1)
 		print_error_msg_and_exit(ERR_OPEN_FAIL);
 	return (ret);
 }
+
+int	has_file_access(const char *input_filename, const char *output_filename)
+{
+	int	input_access;
+	int	output_access;
+
+	input_access = access(input_filename, R_OK);
+	output_access = access(output_filename, R_OK);
+	if (input_access == 0 && output_access == 0)
+		return (1);
+	else
+		return (0);
+}
+
 
 char	*get_env_value_by_name(char *envVarName, char **env)
 {
