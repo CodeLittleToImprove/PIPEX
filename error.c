@@ -29,7 +29,7 @@ void	print_error_cmd_not_found_and_exit(char *split_cmd)
 void	print_error_msg_and_exit(char *error)
 {
 	perror(error);
-	exit (1);
+	exit (EXIT_FAILURE);
 }
 
 void	print_failed_cmd_msg_and_exit(char *error)

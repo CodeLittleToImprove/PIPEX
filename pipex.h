@@ -33,6 +33,8 @@
 # define ERR_OPEN_FAIL "Open file Error"
 # define ERR_ACCESS_FAIL "Access file Error"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
+# define ERR_CHILD_PROCESS "Error with waiting for child process"
+# define ERR_CHILD_SIGNAL "Received signal to terminate child process"
 
 // util.c
 void	ft_free_array(char **array);

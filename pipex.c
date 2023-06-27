@@ -12,7 +12,6 @@
 
 #include "pipex.h"
 // check waitpid and weexit command to replace my exit stuff
-// maybe change open output first and then input
 void	exec(char *cmd, char **env)
 {
 	char	**split_cmd;
@@ -28,26 +27,56 @@ void	exec(char *cmd, char **env)
 	}
 }
 
-void	execute_child_process(char *argv[], int *pipe_fd, char *env[])
+void	execute_child_process(char *argv[], int *pipe_fd, char *env[], int cnum)
 {
 	int	input_fd;
-
-	input_fd = open_input_or_output_file(argv[1], "input");
-	dup2(input_fd, STDIN_FILENO);
-	dup2(pipe_fd[1], STDOUT_FILENO);
-	close(pipe_fd[0]);
-	exec(argv[2], env);
-}
-
-void	execute_parent_process(char *argv[], int *pipe_fd, char *env[])
-{
 	int	output_fd;
 
-	output_fd = open_input_or_output_file(argv[4], "output");
-	dup2(output_fd, STDOUT_FILENO);
-	dup2(pipe_fd[0], STDIN_FILENO);
+//	input_fd = 0;
+//	output_fd = 0;
+	if (cnum == 2)
+	{
+		input_fd = open_input_or_output_file(argv[1], "input");
+		dup2(input_fd, STDIN_FILENO);
+		dup2(pipe_fd[1], STDOUT_FILENO);
+		close(pipe_fd[0]);
+		exec(argv[2], env);
+	}
+	else
+	{
+		output_fd = open_input_or_output_file(argv[4], "output");
+		dup2(output_fd, STDOUT_FILENO);
+		dup2(pipe_fd[0], STDIN_FILENO);
+		close(pipe_fd[1]);
+		exec(argv[3], env);
+	}
+}
+
+void	execute_parent_process(int *pipe_fd)
+{
+	int		status;
+	int		child_exists;
+	pid_t	child_pid;
+
+	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	exec(argv[3], env);
+	child_exists = 1;
+	child_pid = wait(&status);
+	while (child_exists)
+	{
+		if (child_pid > 0)
+		{
+			if (WIFEXITED(status))
+			{
+				if (WEXITSTATUS(status) != 0)
+					print_error_msg_and_exit(ERR_CHILD_PROCESS);
+			}
+			else if (WIFSIGNALED(status))
+				print_error_msg_and_exit(ERR_CHILD_SIGNAL);
+		}
+		child_pid = wait(&status);
+		child_exists = (child_pid > 0);
+	}
 }
 
 // move this out in a single main and this file should be a executer.c or something
@@ -67,21 +96,17 @@ int	main(int argc, char *argv[], char *env[])
 		print_error_msg_and_exit(ERR_ACCESS_FAIL);
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
-	while (cmd_index < argc - 2)
+	while (cmd_index++ < argc - 2)
 	{
 		process_id[cmd_index - 2] = fork();
 //	printf("PROCESS ID after fork %d\n", process_id);
 		if (process_id[cmd_index - 2] == 0)
-			execute_child_process(argv, pipe_fd, env);
+			execute_child_process(argv, pipe_fd, env, cmd_index);
 //		printf("Child PID0: %d\n", getpid());
 		if (process_id[cmd_index - 2] == -1)
 			print_error_msg_and_exit(ERR_FORK);
 	}
-// start to work to refactor the child procesess
 
-//	printf("Parent PID: %d\n", getpid());
-//	printf("PROCESS ID %d\n", process_id);
-//	waitpid(process_id, &status, 0);
-	execute_parent_process(argv, pipe_fd, env);
+	execute_parent_process(pipe_fd);
 	return (0);
 }
