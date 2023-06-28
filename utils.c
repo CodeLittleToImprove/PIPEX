@@ -90,12 +90,12 @@ char	*get_exec_path(char *cmd, char **env)
 	i = -1;
 	path_list = ft_split(get_env_value_by_name("PATH", env), ':');
 	s_cmd = ft_split(cmd, ' ');
-	while (path_list[i++])
+	while (path_list[++i])
 	{
 		current_path = ft_strjoin(path_list[i], "/");
 		exec_path = ft_strjoin(current_path, s_cmd[0]);
 		free(current_path);
-		if (access(exec_path, F_OK | X_OK) == 0)
+		if (access(exec_path, X_OK) == 0)
 		{
 			ft_free_array(s_cmd);
 			return (exec_path);

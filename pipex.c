@@ -88,7 +88,7 @@ int	main(int argc, char *argv[], char *env[])
 	pid_t	process_id[2];
 //	int		status;
 
-	cmd_index = 2;
+	cmd_index = 1;
 	if (argc != 5)
 		return (print_error_msg(ERR_INPUT));
 	file_access_status = has_file_access(argv[1], argv[4]);
@@ -96,7 +96,7 @@ int	main(int argc, char *argv[], char *env[])
 		print_error_msg_and_exit(ERR_ACCESS_FAIL);
 	if (pipe(pipe_fd) == -1)
 		print_error_msg_and_exit(ERR_PIPE);
-	while (cmd_index++ < argc - 2)
+	while (++cmd_index < argc - 1)
 	{
 		process_id[cmd_index - 2] = fork();
 //	printf("PROCESS ID after fork %d\n", process_id);
