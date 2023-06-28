@@ -8,23 +8,36 @@
 # include <fcntl.h>
 # include <stdlib.h>
 
-int	has_file_access(const char *input_filename, const char *output_filename)
+char **parse_command_with_quotes(char *cmd)
 {
-	int	input_access;
-	int	output_access;
+	int c_index = -1;
+	char buf;
+	char **split;
 
-	input_access = access(input_filename, R_OK);
-	output_access = access(output_filename, R_OK);
-	printf("%d\n %d\n", input_access, output_access);
-	if (input_access == 0 && output_access == 0)
-		return (0);
-	else
-		return (-1);
+	while (cmd[++c_index])
+	{
+		if (cmd[c_index] == ' ')
+			cmd[c_index] = '\x1A'; // ASCII character 26 represents the replaced space
+		if (cmd[c_index] == '\'' || cmd[c_index] == '\"')
+		{
+			buf = cmd[c_index];
+			cmd[c_index] = '\x1A';
+			while (cmd[c_index] != buf && cmd[c_index])
+				c_index++;
+			cmd[c_index] = '\x1A';
+		}
+	}
+
+	// Placeholder return value
+	return NULL;
 }
 
-int	main(int argc, char *argv[] )
+int main(void)
 {
-	int ret = has_file_access(argv[1], argv[4]);
-	printf("%d", ret);
+	char input[] = "ls -l \"my files\" /path/to/directory";
+
+	// Use the parsed output as needed
+
 	return 0;
 }
+

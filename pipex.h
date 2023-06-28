@@ -39,10 +39,11 @@
 // util.c
 void	ft_free_array(char **array);
 int		open_input_or_output_file(char *filename, char *in_or_out);
-int		has_file_access(const char *input_filename,
-			const char *output_filename);
+int		has_file_access(const char *input_filename);
+//			const char *output_filename);
 char	*get_env_value_by_name(char *envVarName, char **env);
 char	*get_exec_path(char *cmd, char **env);
+char	**parse_command_with_quotes(char *cmd);
 
 // error.c
 int		print_error_msg(char *error);

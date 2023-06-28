@@ -11,13 +11,41 @@
 /* ************************************************************************** */
 
 #include "pipex.h"
-// check waitpid and weexit command to replace my exit stuff
+
+//void	exec(char *cmd, char **env)
+//{
+//	char	**split_cmd;
+//	char	*exec_path;
+//
+//	split_cmd = ft_split(cmd, ' ');
+////	ft_putstr_fd(cmd, 2);
+////	ft_putstr_fd("done", 2);
+////	ft_putstr_fd("\n", 2);
+////	for (int i = 0; split_cmd[i] != NULL; i++)
+////	{
+////		ft_putstr_fd(split_cmd[i], 2);
+////		ft_putstr_fd("\n", 2);
+////	}
+//	exec_path = get_exec_path(split_cmd[0], env);
+//	if (execve(exec_path, split_cmd, env) == -1)
+//	{
+//		free(exec_path);
+//		ft_free_array(split_cmd);
+//		print_error_msg_and_exit(ERR_EXEC);
+//	}
+//}
+
 void	exec(char *cmd, char **env)
 {
 	char	**split_cmd;
 	char	*exec_path;
 
-	split_cmd = ft_split(cmd, ' ');
+	split_cmd = parse_command_with_quotes(cmd);
+//	for (int i = 0; split_cmd[i] != NULL; i++)
+//	{
+//		ft_putstr_fd(split_cmd[i], 2);
+//		ft_putstr_fd("\n", 2);
+//	}
 	exec_path = get_exec_path(split_cmd[0], env);
 	if (execve(exec_path, split_cmd, env) == -1)
 	{
@@ -91,7 +119,8 @@ int	main(int argc, char *argv[], char *env[])
 	cmd_index = 1;
 	if (argc != 5)
 		return (print_error_msg(ERR_INPUT));
-	file_access_status = has_file_access(argv[1], argv[4]);
+	// check only one file
+	file_access_status = has_file_access(argv[1]);
 	if (file_access_status == -1)
 		print_error_msg_and_exit(ERR_ACCESS_FAIL);
 	if (pipe(pipe_fd) == -1)

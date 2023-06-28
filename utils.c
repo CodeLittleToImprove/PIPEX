@@ -42,14 +42,14 @@ int	open_input_or_output_file(char *filename, char *in_or_out)
 	return (ret);
 }
 
-int	has_file_access(const char *input_filename, const char *output_filename)
+int	has_file_access(const char *input_filename)
 {
 	int	input_access;
-	int	output_access;
+//	int	output_access;
 
 	input_access = access(input_filename, R_OK);
-	output_access = access(output_filename, R_OK);
-	if (input_access == 0 && output_access == 0)
+//	output_access = access(output_filename, R_OK);
+	if (input_access == 0)
 		return (1);
 	else
 		return (0);
@@ -108,3 +108,28 @@ char	*get_exec_path(char *cmd, char **env)
 	return (NULL);
 }
 
+char	**parse_command_with_quotes(char *cmd)
+{
+	int		c_index;
+	char	quote_marker;
+	char	**split_cmd;
+
+	c_index = -1;
+
+	while (cmd[++c_index])
+	{
+		if (cmd[c_index] == ' ')
+			cmd[c_index] = '\x1A'; // ASCII character 26 represents the replaced space
+		if (cmd[c_index] == '\'' || cmd[c_index] == '\"')
+		{
+			quote_marker = cmd[c_index];
+			cmd[c_index] = '\x1A';
+			while (cmd[c_index] != quote_marker && cmd[c_index])
+				c_index++;
+			cmd[c_index] = '\x1A';
+		}
+	}
+
+	split_cmd = ft_split(cmd, '\x1A');
+	return (split_cmd);
+}
