@@ -9,7 +9,7 @@
 /*   Updated: 2023/05/22 16:48:25 by tbui-quo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-// when first command fails i get undefined error
+// when first command returns nothing i get undefined error 0
 #include "pipex.h"
 
 //void	exec(char *cmd, char **env)
@@ -68,6 +68,8 @@ void	execute_child_process(char *argv[], int *pipe_fd, char *env[], int cnum)
 		dup2(input_fd, STDIN_FILENO);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
+//		ft_putstr_fd("first cmd", 2);
+//		ft_putstr_fd("\n", 2);
 		exec(argv[2], env);
 	}
 	else
@@ -77,37 +79,48 @@ void	execute_child_process(char *argv[], int *pipe_fd, char *env[], int cnum)
 		dup2(output_fd, STDOUT_FILENO);
 		dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
+//		ft_putstr_fd("second cmd", 2);
+//		ft_putstr_fd("\n", 2);
 		exec(argv[3], env);
 	}
 }
 
-void	execute_parent_process(int *pipe_fd)
+
+
+void	execute_parent_process(int *pipe_fd, int num_children)
 {
 	int status;
 	pid_t child_pid;
-	int child_exists = 1; // Flag variable to indicate if a child process exists
+	int child_exists = num_children; // Track the number of remaining child processes
 
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 
-	child_pid = wait(&status); // Initial wait outside the loop
-	while (child_exists) {
-		if (child_pid > 0) {
-			if (WIFEXITED(status)) {
-				if (WEXITSTATUS(status) != 0) {
+	while (child_exists > 0)
+	{
+		child_pid = wait(&status);
+		ft_putnbr_fd(child_pid, 2);
+		ft_putstr_fd("\n", 2);
+		if (child_pid > 0)
+		{
+			if (WIFEXITED(status))
+			{
+				if (WEXITSTATUS(status) != 0)
+				{
 					// Handle child process error
+					ft_putnbr_fd(status, 2);
+					ft_putstr_fd("\n", 2);
 					print_error_msg_and_exit(ERR_CHILD_PROCESS);
-					exit(EXIT_FAILURE);
 				}
-			} else if (WIFSIGNALED(status)) {
+			}
+			else if (WIFSIGNALED(status))
+			{
 				// Handle child process termination due to a signal
 				print_error_msg_and_exit(ERR_CHILD_SIGNAL);
-				exit(EXIT_FAILURE);
 			}
-		}
 
-		child_pid = wait(&status); // Wait for the next child process
-		child_exists = (child_pid > 0); // Update the flag variable
+			child_exists--;
+		}
 	}
 }
 
@@ -140,6 +153,6 @@ int	main(int argc, char *argv[], char *env[])
 			print_error_msg_and_exit(ERR_FORK);
 	}
 
-	execute_parent_process(pipe_fd);
+	execute_parent_process(pipe_fd, 2);
 	return (0);
 }
