@@ -87,42 +87,67 @@ void	execute_child_process(char *argv[], int *pipe_fd, char *env[], int cnum)
 
 
 
-void	execute_parent_process(int *pipe_fd, int num_children)
+void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 {
-	int status;
-	pid_t child_pid;
-	int child_exists = num_children; // Track the number of remaining child processes
+	int	status_code1;
+	int	status_code2;
 
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 
-	while (child_exists > 0)
-	{
-		child_pid = wait(&status);
-		ft_putnbr_fd(child_pid, 2);
-		ft_putstr_fd("\n", 2);
-		if (child_pid > 0)
-		{
-			if (WIFEXITED(status))
-			{
-				if (WEXITSTATUS(status) != 0)
-				{
-					// Handle child process error
-					ft_putnbr_fd(status, 2);
-					ft_putstr_fd("\n", 2);
-					print_error_msg_and_exit(ERR_CHILD_PROCESS);
-				}
-			}
-			else if (WIFSIGNALED(status))
-			{
-				// Handle child process termination due to a signal
-				print_error_msg_and_exit(ERR_CHILD_SIGNAL);
-			}
+//	ft_putnbr_fd(process_id[0],2);
+//	ft_putstr_fd("\n", 2);
+//	ft_putnbr_fd(process_id[1],2);
+//	ft_putstr_fd("\n", 2);
+	waitpid(process_id[0], &status_code1, 0);
+	waitpid(process_id[1], &status_code2, 0);
 
-			child_exists--;
-		}
+	if ((status_code1 >> 8) && !(status_code2 >> 8))
+	{
+		exit(status_code1 >> 8);
+	}
+	else
+	{
+		exit(status_code2 >> 8);
 	}
 }
+
+//void	execute_parent_process(int *pipe_fd, int num_children)
+//{
+//	int status;
+//	pid_t child_pid;
+//	int child_exists = num_children; // Track the number of remaining child processes
+//
+//	close(pipe_fd[0]);
+//	close(pipe_fd[1]);
+//
+//	while (child_exists > 0)
+//	{
+//		child_pid = wait(&status);
+//		ft_putnbr_fd(child_pid, 2);
+//		ft_putstr_fd("\n", 2);
+//		if (child_pid > 0)
+//		{
+//			if (WIFEXITED(status))
+//			{
+//				if (WEXITSTATUS(status) != 0)
+//				{
+//					// Handle child process error
+//					ft_putnbr_fd(status, 2);
+//					ft_putstr_fd("\n", 2);
+//					print_error_msg_and_exit(ERR_CHILD_PROCESS);
+//				}
+//			}
+//			else if (WIFSIGNALED(status))
+//			{
+//				// Handle child process termination due to a signal
+//				print_error_msg_and_exit(ERR_CHILD_SIGNAL);
+//			}
+//
+//			child_exists--;
+//		}
+//	}
+//}
 
 // move this out in a single main and this file should be a executer.c or something
 int	main(int argc, char *argv[], char *env[])
@@ -145,7 +170,7 @@ int	main(int argc, char *argv[], char *env[])
 	while (++cmd_index < argc - 1)
 	{
 		process_id[cmd_index - 2] = fork();
-//	printf("PROCESS ID after fork %d\n", process_id);
+//	printf("PROCESS ID after fork %d\n", process_id[cmd_index - 2]);
 		if (process_id[cmd_index - 2] == 0)
 			execute_child_process(argv, pipe_fd, env, cmd_index);
 //		printf("Child PID0: %d\n", getpid());
@@ -153,6 +178,6 @@ int	main(int argc, char *argv[], char *env[])
 			print_error_msg_and_exit(ERR_FORK);
 	}
 
-	execute_parent_process(pipe_fd, 2);
+	execute_parent_process(pipe_fd, process_id);
 	return (0);
 }
