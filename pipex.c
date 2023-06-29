@@ -110,6 +110,16 @@ void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 	{
 		exit(status_code2 >> 8);
 	}
+//	// why is this not equal?
+//	if ((status_code1 != 0) && (status_code2 == 0))
+//	{
+//		exit(status_code1);
+//	}
+//	else
+//	{
+//		exit(status_code2);
+//	}
+
 }
 
 //void	execute_parent_process(int *pipe_fd, int num_children)
