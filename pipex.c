@@ -9,7 +9,7 @@
 /*   Updated: 2023/05/22 16:48:25 by tbui-quo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
+// when first command fails i get undefined error
 #include "pipex.h"
 
 //void	exec(char *cmd, char **env)
@@ -40,15 +40,16 @@ void	exec(char *cmd, char **env)
 	char	**split_cmd;
 	char	*exec_path;
 
+	exec_path = get_exec_path(cmd, env);
 	split_cmd = parse_command_with_quotes(cmd);
 //	for (int i = 0; split_cmd[i] != NULL; i++)
 //	{
 //		ft_putstr_fd(split_cmd[i], 2);
 //		ft_putstr_fd("\n", 2);
 //	}
-	exec_path = get_exec_path(split_cmd[0], env);
 	if (execve(exec_path, split_cmd, env) == -1)
 	{
+//		ft_putstr_fd("error\n", 2);
 		free(exec_path);
 		ft_free_array(split_cmd);
 		print_error_msg_and_exit(ERR_EXEC);
@@ -60,50 +61,53 @@ void	execute_child_process(char *argv[], int *pipe_fd, char *env[], int cnum)
 	int	input_fd;
 	int	output_fd;
 
-//	input_fd = 0;
-//	output_fd = 0;
 	if (cnum == 2)
 	{
+		close(pipe_fd[0]);
 		input_fd = open_input_or_output_file(argv[1], "input");
 		dup2(input_fd, STDIN_FILENO);
 		dup2(pipe_fd[1], STDOUT_FILENO);
-		close(pipe_fd[0]);
+		close(pipe_fd[1]);
 		exec(argv[2], env);
 	}
 	else
 	{
+		close(pipe_fd[1]);
 		output_fd = open_input_or_output_file(argv[4], "output");
 		dup2(output_fd, STDOUT_FILENO);
 		dup2(pipe_fd[0], STDIN_FILENO);
-		close(pipe_fd[1]);
+		close(pipe_fd[0]);
 		exec(argv[3], env);
 	}
 }
 
 void	execute_parent_process(int *pipe_fd)
 {
-	int		status;
-	int		child_exists;
-	pid_t	child_pid;
+	int status;
+	pid_t child_pid;
+	int child_exists = 1; // Flag variable to indicate if a child process exists
 
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	child_exists = 1;
-	child_pid = wait(&status);
-	while (child_exists)
-	{
-		if (child_pid > 0)
-		{
-			if (WIFEXITED(status))
-			{
-				if (WEXITSTATUS(status) != 0)
+
+	child_pid = wait(&status); // Initial wait outside the loop
+	while (child_exists) {
+		if (child_pid > 0) {
+			if (WIFEXITED(status)) {
+				if (WEXITSTATUS(status) != 0) {
+					// Handle child process error
 					print_error_msg_and_exit(ERR_CHILD_PROCESS);
-			}
-			else if (WIFSIGNALED(status))
+					exit(EXIT_FAILURE);
+				}
+			} else if (WIFSIGNALED(status)) {
+				// Handle child process termination due to a signal
 				print_error_msg_and_exit(ERR_CHILD_SIGNAL);
+				exit(EXIT_FAILURE);
+			}
 		}
-		child_pid = wait(&status);
-		child_exists = (child_pid > 0);
+
+		child_pid = wait(&status); // Wait for the next child process
+		child_exists = (child_pid > 0); // Update the flag variable
 	}
 }
 

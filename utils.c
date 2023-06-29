@@ -89,6 +89,11 @@ char	*get_exec_path(char *cmd, char **env)
 
 	i = -1;
 	path_list = ft_split(get_env_value_by_name("PATH", env), ':');
+//		for (int i = 0; path_list[i] != NULL; i++)
+//	{
+//		ft_putstr_fd(path_list[i], 2);
+//		ft_putstr_fd("\n", 2);
+//	}
 	s_cmd = ft_split(cmd, ' ');
 	while (path_list[++i])
 	{
@@ -130,6 +135,6 @@ char	**parse_command_with_quotes(char *cmd)
 		}
 	}
 
-	split_cmd = ft_split(cmd, '\x1A');
+	split_cmd = ft_split(cmd, 26);
 	return (split_cmd);
 }
