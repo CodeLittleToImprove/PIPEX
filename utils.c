@@ -100,6 +100,14 @@ char	*get_exec_path(char *cmd, char **env)
 		current_path = ft_strjoin(path_list[i], "/");
 		exec_path = ft_strjoin(current_path, s_cmd[0]);
 		free(current_path);
+//		if (ft_strncmp(s_cmd[0], "", ft_strlen(s_cmd[0])) == 0)
+//		{
+//			print_error_msg_and_exit_positive(exec_path);
+//		}
+//		if (access(exec_path, F_OK) != 0)
+//		{
+//			print_error_msg_and_exit_positive(exec_path);
+//		}
 		if (access(exec_path, X_OK) == 0)
 		{
 			ft_free_array(s_cmd);

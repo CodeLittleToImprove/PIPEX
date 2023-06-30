@@ -32,8 +32,15 @@ void	print_error_msg_and_exit(char *error)
 	exit (EXIT_FAILURE);
 }
 
-void	print_failed_cmd_msg_and_exit(char *error)
+void	print_error_msg_and_exit_positive(char *error)
 {
 	perror(error);
-	exit (127);
+	exit (EXIT_SUCCESS);
 }
+
+
+//void	print_failed_cmd_msg_and_exit(char *error)
+//{
+//	perror(error);
+//	exit (127);
+//}

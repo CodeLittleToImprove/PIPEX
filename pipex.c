@@ -99,15 +99,19 @@ void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 	waitpid(process_id[0], &status_code1, 0);
 	waitpid(process_id[1], &status_code2, 0);
 
-	exit_status = WEXITSTATUS(status_code1);
-
-	if (exit_status != 0)
-	{
-		exit(exit_status);
-	}
+//	exit_status = WEXITSTATUS(status_code1);
+//
+//	if (exit_status != 0)
+//	{
+//		ft_putstr_fd("first child exit", 2);
+//		ft_putnbr_fd(exit_status, 2);
+//		exit(exit_status);
+//	}
 
 	exit_status = WEXITSTATUS(status_code2);
-
+//	ft_putstr_fd("second child exit", 2);
+//	ft_putstr_fd("\n", 2);
+//	ft_putnbr_fd(exit_status, 2);
 	exit(exit_status);
 }
 

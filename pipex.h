@@ -49,5 +49,6 @@ char	**parse_command_with_quotes(char *cmd);
 int		print_error_msg(char *error);
 void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_msg_and_exit(char *error);
-void	print_failed_cmd_msg_and_exit(char *split_cmd);
+//void	print_failed_cmd_msg_and_exit(char *split_cmd);
+void	print_error_msg_and_exit_positive(char *error);
 #endif
