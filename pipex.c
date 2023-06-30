@@ -91,72 +91,48 @@ void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 {
 	int	status_code1;
 	int	status_code2;
+	int	exit_status;
 
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 
-//	ft_putnbr_fd(process_id[0],2);
-//	ft_putstr_fd("\n", 2);
-//	ft_putnbr_fd(process_id[1],2);
-//	ft_putstr_fd("\n", 2);
 	waitpid(process_id[0], &status_code1, 0);
 	waitpid(process_id[1], &status_code2, 0);
 
-	if ((status_code1 >> 8) && !(status_code2 >> 8))
-	{
-		exit(status_code1 >> 8);
-	}
-	else
-	{
-		exit(status_code2 >> 8);
-	}
-//	// why is this not equal?
-//	if ((status_code1 != 0) && (status_code2 == 0))
-//	{
-//		exit(status_code1);
-//	}
-//	else
-//	{
-//		exit(status_code2);
-//	}
+	exit_status = WEXITSTATUS(status_code1);
 
+	if (exit_status != 0)
+	{
+		exit(exit_status);
+	}
+
+	exit_status = WEXITSTATUS(status_code2);
+
+	exit(exit_status);
 }
 
-//void	execute_parent_process(int *pipe_fd, int num_children)
+//void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 //{
-//	int status;
-//	pid_t child_pid;
-//	int child_exists = num_children; // Track the number of remaining child processes
+//	int	status_code1;
+//	int	status_code2;
+//	int	exit_status;
+//	int	exit_status2;
 //
 //	close(pipe_fd[0]);
 //	close(pipe_fd[1]);
 //
-//	while (child_exists > 0)
-//	{
-//		child_pid = wait(&status);
-//		ft_putnbr_fd(child_pid, 2);
-//		ft_putstr_fd("\n", 2);
-//		if (child_pid > 0)
-//		{
-//			if (WIFEXITED(status))
-//			{
-//				if (WEXITSTATUS(status) != 0)
-//				{
-//					// Handle child process error
-//					ft_putnbr_fd(status, 2);
-//					ft_putstr_fd("\n", 2);
-//					print_error_msg_and_exit(ERR_CHILD_PROCESS);
-//				}
-//			}
-//			else if (WIFSIGNALED(status))
-//			{
-//				// Handle child process termination due to a signal
-//				print_error_msg_and_exit(ERR_CHILD_SIGNAL);
-//			}
+//	waitpid(process_id[0], &status_code1, 0);
+//	waitpid(process_id[1], &status_code2, 0);
 //
-//			child_exists--;
-//		}
-//	}
+//	exit_status = WEXITSTATUS(status_code1);
+//	exit_status2 = WEXITSTATUS(status_code2);
+//
+//	if (exit_status == 1)
+//		exit(exit_status);
+//	else if (exit_status2 == 1)
+//		exit(exit_status2);
+//	else
+//		exit(0);
 //}
 
 // move this out in a single main and this file should be a executer.c or something
@@ -166,7 +142,7 @@ int	main(int argc, char *argv[], char *env[])
 	int		file_access_status;
 	int		cmd_index;
 	pid_t	process_id[2];
-//	int		status;
+//	int		last_status;
 
 	cmd_index = 1;
 	if (argc != 5)
