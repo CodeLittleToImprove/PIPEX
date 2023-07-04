@@ -22,6 +22,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <string.h>
 
 # define ERR_INFILE "Infile"
 # define ERR_OUTFILE "Outfile"
@@ -30,7 +31,7 @@
 # define ERR_CMD "pipex: "
 # define ERR_EXEC "Execve Error"
 # define ERR_FORK "Fork Error"
-# define ERR_OPEN_FAIL "pipex: "
+# define ERR_OPEN_FILE "pipex: "
 # define ERR_ACCESS_FAIL "Access file Error"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_CHILD_PROCESS "Error with waiting for child process"
@@ -47,7 +48,7 @@ char	**parse_command_with_quotes(char *cmd);
 
 // error.c
 int		print_error_msg(char *error);
-void	print_error_cmd_not_found_and_exit(char *split_cmd);
+void	print_error_cmd_not_found_and_exit(char *split_cmd, char *error);
 void	print_error_msg_and_exit(char *error);
 //void	print_failed_cmd_msg_and_exit(char *split_cmd);
 void	print_error_msg_and_exit_positive(char *error);

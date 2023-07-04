@@ -38,7 +38,7 @@ int	open_input_or_output_file(char *filename, char *in_or_out)
 	else
 		print_error_msg_and_exit(ERR_IMPOSSIBLE);
 	if (ret == -1)
-		print_error_open_file_and_exit(ERR_OPEN_FAIL, filename);
+		print_error_open_file_and_exit(filename, ERR_OPEN_FILE);
 	return (ret);
 }
 
@@ -119,7 +119,7 @@ char	*get_exec_path(char *cmd, char **env)
 	}
 	ft_free_array(path_list);
 	ft_free_array(s_cmd);
-	print_error_cmd_not_found_and_exit(cmd);
+	print_error_cmd_not_found_and_exit(cmd, ERR_CMD);
 	return (NULL);
 }
 
