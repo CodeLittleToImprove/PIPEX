@@ -27,7 +27,7 @@
 # define ERR_OUTFILE "Outfile"
 # define ERR_INPUT "Invalid number of arguments.\n"
 # define ERR_PIPE "Pipe Error"
-# define ERR_CMD "Command not found\n"
+# define ERR_CMD "pipex: "
 # define ERR_EXEC "Execve Error"
 # define ERR_FORK "Fork Error"
 # define ERR_OPEN_FAIL "pipex: "

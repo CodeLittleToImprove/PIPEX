@@ -12,29 +12,6 @@
 
 #include "pipex.h"
 
-//void	exec(char *cmd, char **env)
-//{
-//	char	**split_cmd;
-//	char	*exec_path;
-//
-//	split_cmd = ft_split(cmd, ' ');
-////	ft_putstr_fd(cmd, 2);
-////	ft_putstr_fd("done", 2);
-////	ft_putstr_fd("\n", 2);
-////	for (int i = 0; split_cmd[i] != NULL; i++)
-////	{
-////		ft_putstr_fd(split_cmd[i], 2);
-////		ft_putstr_fd("\n", 2);
-////	}
-//	exec_path = get_exec_path(split_cmd[0], env);
-//	if (execve(exec_path, split_cmd, env) == -1)
-//	{
-//		free(exec_path);
-//		ft_free_array(split_cmd);
-//		print_error_msg_and_exit(ERR_EXEC);
-//	}
-//}
-
 void	exec(char *cmd, char **env)
 {
 	char	**split_cmd;
@@ -47,9 +24,12 @@ void	exec(char *cmd, char **env)
 //		ft_putstr_fd(split_cmd[i], 2);
 //		ft_putstr_fd("\n", 2);
 //	}
+//	ft_putstr_fd("ahhhhhhhhhhh", 2);
+//	ft_putstr_fd("\n", 2);
+//	ft_putstr_fd(exec_path, 2);
 	if (execve(exec_path, split_cmd, env) == -1)
 	{
-//		ft_putstr_fd("error\n", 2);
+//		ft_putstr_fd("ahhhhhhhhhhh", 2);
 		free(exec_path);
 		ft_free_array(split_cmd);
 		print_error_msg_and_exit(ERR_EXEC);
@@ -92,6 +72,7 @@ void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 	int	status_code1;
 	int	status_code2;
 	int	exit_status;
+//	int exit_status2;
 
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
@@ -107,6 +88,9 @@ void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 //		ft_putnbr_fd(exit_status, 2);
 //		exit(exit_status);
 //	}
+
+//	exit_status2 = WEXITSTATUS(status_code1);
+//	ft_putnbr_fd(exit_status2, 2);
 
 	exit_status = WEXITSTATUS(status_code2);
 //	ft_putstr_fd("second child exit", 2);

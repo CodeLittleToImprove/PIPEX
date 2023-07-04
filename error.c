@@ -20,22 +20,22 @@ int	print_error_msg(char *error)
 
 void	print_error_cmd_not_found_and_exit(char *split_cmd)
 {
-	write(STDERR_FILENO, "command not found: ", 20);
-	write(STDERR_FILENO, split_cmd, ft_strlen(split_cmd));
-	write(STDERR_FILENO, "\n", 1);
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putstr_fd(split_cmd, STDERR_FILENO);
+	ft_putstr_fd(": command not found", STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 	exit(127);
 }
 
 void	print_error_open_file_and_exit(char *filename, char *error)
 {
-	ft_putstr_fd(filename, 2);
+	ft_putstr_fd(filename, STDERR_FILENO);
 	perror(error);
 	exit (EXIT_FAILURE);
 }
 
 void	print_error_msg_and_exit(char *error)
 {
-//	ft_putstr_fd("c", 2);
 	perror(error);
 	exit (EXIT_FAILURE);
 }
