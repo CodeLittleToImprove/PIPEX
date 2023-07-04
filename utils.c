@@ -38,7 +38,7 @@ int	open_input_or_output_file(char *filename, char *in_or_out)
 	else
 		print_error_msg_and_exit(ERR_IMPOSSIBLE);
 	if (ret == -1)
-		print_error_msg_and_exit("pipex: input");
+		print_error_open_file_and_exit(ERR_OPEN_FAIL, filename);
 	return (ret);
 }
 

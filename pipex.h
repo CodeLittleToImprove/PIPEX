@@ -30,7 +30,7 @@
 # define ERR_CMD "Command not found\n"
 # define ERR_EXEC "Execve Error"
 # define ERR_FORK "Fork Error"
-# define ERR_OPEN_FAIL "Open file Error"
+# define ERR_OPEN_FAIL "pipex: "
 # define ERR_ACCESS_FAIL "Access file Error"
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_CHILD_PROCESS "Error with waiting for child process"
@@ -51,4 +51,5 @@ void	print_error_cmd_not_found_and_exit(char *split_cmd);
 void	print_error_msg_and_exit(char *error);
 //void	print_failed_cmd_msg_and_exit(char *split_cmd);
 void	print_error_msg_and_exit_positive(char *error);
+void	print_error_open_file_and_exit(char *filename, char *error);
 #endif

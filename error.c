@@ -26,8 +26,16 @@ void	print_error_cmd_not_found_and_exit(char *split_cmd)
 	exit(127);
 }
 
+void	print_error_open_file_and_exit(char *filename, char *error)
+{
+	ft_putstr_fd(filename, 2);
+	perror(error);
+	exit (EXIT_FAILURE);
+}
+
 void	print_error_msg_and_exit(char *error)
 {
+//	ft_putstr_fd("c", 2);
 	perror(error);
 	exit (EXIT_FAILURE);
 }
