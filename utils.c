@@ -38,7 +38,7 @@ int	open_input_or_output_file(char *filename, char *in_or_out)
 	else
 		print_error_msg_and_exit(ERR_IMPOSSIBLE);
 	if (ret == -1)
-		print_error_msg_and_exit(ERR_OPEN_FAIL);
+		print_error_msg_and_exit("pipex: input");
 	return (ret);
 }
 
@@ -63,6 +63,8 @@ char	*get_env_value_by_name(char *envVarName, char **env)
 	char	*path;
 
 	i = 0;
+	if (*env == NULL)
+		return ("/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:");
 	while (env[i])
 	{
 		if (ft_strncmp(env[i], envVarName, ft_strlen(envVarName)) == 0)

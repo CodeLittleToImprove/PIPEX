@@ -9,7 +9,7 @@
 /*   Updated: 2023/05/22 16:48:25 by tbui-quo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-// when first command returns nothing i get undefined error 0
+
 #include "pipex.h"
 
 //void	exec(char *cmd, char **env)
