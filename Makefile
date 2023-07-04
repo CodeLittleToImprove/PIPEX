@@ -17,7 +17,7 @@ LIBFT			= libft
 
 SRCDIR			= srcs
 
-SRCS			= pipex.c error.c utils.c
+SRCS			= main.c pipex.c error.c utils.c
 
 CC				= gcc
 

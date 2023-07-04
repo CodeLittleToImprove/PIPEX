@@ -65,30 +65,3 @@ void	execute_parent_process(int *pipe_fd, pid_t *process_id)
 	exit_status = WEXITSTATUS(status_code2);
 	exit(exit_status);
 }
-
-int	main(int argc, char *argv[], char *env[])
-{
-	int		pipe_fd[2];
-	int		file_access_status;
-	int		cmd_index;
-	pid_t	process_id[2];
-
-	cmd_index = 1;
-	if (argc != 5)
-		return (print_error_msg(ERR_INPUT));
-	file_access_status = has_file_access(argv[1]);
-	if (file_access_status == -1)
-		print_error_msg_and_exit(ERR_ACCESS_FAIL);
-	if (pipe(pipe_fd) == -1)
-		print_error_msg_and_exit(ERR_PIPE);
-	while (++cmd_index < argc - 1)
-	{
-		process_id[cmd_index - 2] = fork();
-		if (process_id[cmd_index - 2] == 0)
-			execute_child_process(argv, pipe_fd, env, cmd_index);
-		if (process_id[cmd_index - 2] == -1)
-			print_error_msg_and_exit(ERR_FORK);
-	}
-	execute_parent_process(pipe_fd, process_id);
-	return (0);
-}

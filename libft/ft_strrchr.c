@@ -43,9 +43,9 @@ char	*ft_strrchr(const char *s, int c)
 	{
 		if (*s == (char)c)
 		{
-				lastseen = (char *)s;
+			lastseen = (char *)s;
 		}
-			s++;
+		s++;
 	}
 	if (*s == (char)c)
 		lastseen = (char *)s;

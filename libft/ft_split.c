@@ -86,7 +86,7 @@ char	**ft_split(char const *s, char c)
 		{
 			ft_free(strarray, array_index);
 			return (0);
-		} 
+		}
 		array_index++;
 		s += ft_word_size(s, c);
 	}

@@ -23,6 +23,8 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <string.h>
+# include <errno.h>
+
 
 # define INPUT 1
 # define OUTPUT 2
@@ -32,12 +34,16 @@
 # define ERR_EXEC "Execve Error"
 # define ERR_FORK "Fork Error"
 # define ERR_OPEN_FILE "pipex: "
-# define ERR_ACCESS_FAIL "Access file Error"
+# define ERR_ACCESS_FAIL "pipex: "
 # define ERR_IMPOSSIBLE "Impossible stop sabotating my Program :("
 # define ERR_CHILD_PROCESS "Error with waiting for child process"
 # define ERR_CHILD_SIGNAL "Received signal to terminate child process"
 
 // pipex.c
+void	exec(char *cmd, char **env);
+void	execute_child_process(char *argv[], int *pipe_fd, char *env[], int cnum);
+void	execute_parent_process(int *pipe_fd, pid_t *process_id);
+
 // util.c
 void	ft_free_array(char **array);
 int		open_input_or_output_file(char *filename, int in_or_out);

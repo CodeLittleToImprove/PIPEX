@@ -41,7 +41,7 @@ void	ft_putnbr_fd(int n, int fd)
 		ft_putnbr_fd(n / 10, fd);
 		first_digit = n % 10;
 		ft_putchar_fd(first_digit + 48, fd);
-	}	
+	}
 	else
 	{
 		single_digit = n + 48;

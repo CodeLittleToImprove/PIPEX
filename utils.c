@@ -45,14 +45,12 @@ int	open_input_or_output_file(char *filename, int in_or_out)
 int	has_file_access(const char *input_filename)
 {
 	int	input_access;
-//	int	output_access;
 
 	input_access = access(input_filename, R_OK);
-//	output_access = access(output_filename, R_OK);
 	if (input_access == 0)
-		return (1);
+		return (1); // has to be 0
 	else
-		return (0);
+		return (0); // has to be -1
 }
 
 
@@ -91,25 +89,12 @@ char	*get_exec_path(char *cmd, char **env)
 
 	i = -1;
 	path_list = ft_split(get_env_value_by_name("PATH", env), ':');
-//		for (int i = 0; path_list[i] != NULL; i++)
-//	{
-//		ft_putstr_fd(path_list[i], 2);
-//		ft_putstr_fd("\n", 2);
-//	}
 	s_cmd = ft_split(cmd, ' ');
 	while (path_list[++i])
 	{
 		current_path = ft_strjoin(path_list[i], "/");
 		exec_path = ft_strjoin(current_path, s_cmd[0]);
 		free(current_path);
-//		if (ft_strncmp(s_cmd[0], "", ft_strlen(s_cmd[0])) == 0)
-//		{
-//			print_error_msg_and_exit_positive(exec_path);
-//		}
-//		if (access(exec_path, F_OK) != 0)
-//		{
-//			print_error_msg_and_exit_positive(exec_path);
-//		}
 		if (access(exec_path, X_OK) == 0)
 		{
 			ft_free_array(s_cmd);

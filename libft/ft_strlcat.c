@@ -34,14 +34,14 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	maxcopylen = 0;
 	index = 0;
 	while (dst[maxcopylen] != '\0' && maxcopylen < size)
-			maxcopylen++;
+		maxcopylen++;
 	while (src[index] != '\0' && (maxcopylen + index + 1) < size)
 	{
-			dst[maxcopylen + index] = src[index];
-			index++;
+		dst[maxcopylen + index] = src[index];
+		index++;
 	}
 	if (maxcopylen < size)
-			dst[maxcopylen + index] = '\0';
+		dst[maxcopylen + index] = '\0';
 	return (maxcopylen + ft_strlen(src));
 }
 // maxcopylen means how many bytes can be copied from dst,
