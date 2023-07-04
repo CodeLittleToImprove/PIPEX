@@ -24,8 +24,8 @@
 # include <stdlib.h>
 # include <string.h>
 
-# define ERR_INFILE "Infile"
-# define ERR_OUTFILE "Outfile"
+# define INPUT 1
+# define OUTPUT 2
 # define ERR_INPUT "Invalid number of arguments.\n"
 # define ERR_PIPE "Pipe Error"
 # define ERR_CMD "pipex: "
@@ -37,9 +37,10 @@
 # define ERR_CHILD_PROCESS "Error with waiting for child process"
 # define ERR_CHILD_SIGNAL "Received signal to terminate child process"
 
+// pipex.c
 // util.c
 void	ft_free_array(char **array);
-int		open_input_or_output_file(char *filename, char *in_or_out);
+int		open_input_or_output_file(char *filename, int in_or_out);
 int		has_file_access(const char *input_filename);
 //			const char *output_filename);
 char	*get_env_value_by_name(char *envVarName, char **env);
