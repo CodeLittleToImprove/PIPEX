@@ -41,16 +41,3 @@ void	print_error_msg_and_exit(char *error)
 	perror(error);
 	exit (EXIT_FAILURE);
 }
-
-//void	print_error_msg_and_exit()
-//{
-//	perror(NULL);
-//	exit (EXIT_FAILURE);
-//}
-
-void	print_error_msg_and_exit_positive(char *error)
-{
-	perror(error);
-	exit (EXIT_SUCCESS);
-}
-

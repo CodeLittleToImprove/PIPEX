@@ -30,7 +30,6 @@ int	open_input_or_output_file(char *filename, int in_or_out)
 	int	ret;
 
 	ret = 0;
-
 	if (in_or_out == INPUT)
 		ret = open(filename, O_RDONLY, 0666);
 	else if (in_or_out == OUTPUT)
@@ -41,18 +40,6 @@ int	open_input_or_output_file(char *filename, int in_or_out)
 		print_error_open_file_and_exit(filename, ERR_OPEN_FILE);
 	return (ret);
 }
-
-int	has_file_access(const char *input_filename)
-{
-	int	input_access;
-
-	input_access = access(input_filename, R_OK);
-	if (input_access == 0)
-		return (1); // has to be 0
-	else
-		return (0); // has to be -1
-}
-
 
 char	*get_env_value_by_name(char *envVarName, char **env)
 {
@@ -115,11 +102,10 @@ char	**parse_command_with_quotes(char *cmd)
 	char	**split_cmd;
 
 	c_index = -1;
-
 	while (cmd[++c_index])
 	{
 		if (cmd[c_index] == ' ')
-			cmd[c_index] = '\x1A'; // ASCII character 26 represents the replaced space
+			cmd[c_index] = '\x1A';
 		if (cmd[c_index] == '\'' || cmd[c_index] == '\"')
 		{
 			quote_marker = cmd[c_index];
@@ -129,7 +115,6 @@ char	**parse_command_with_quotes(char *cmd)
 			cmd[c_index] = '\x1A';
 		}
 	}
-
-	split_cmd = ft_split(cmd, 26);
+	split_cmd = ft_split(cmd, '\x1A');
 	return (split_cmd);
 }
