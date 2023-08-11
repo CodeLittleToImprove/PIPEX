@@ -1,8 +1,8 @@
-gcc -o pipex pipex.c utils.c error.c -I include -L libft -lft
+gcc -o pipex main.c pipex.c utils.c error.c -I include -L libft -lft
 
 cp /Users/tbui-quo/francinette/temp/pipex/pipexMedic/mandatory.log .
 
 < input.txt grep Hello | awk '{count++} END {print count}' > output.txt
 ./pipex input.txt "grep Hello" "awk '{count++} END {print count}'" output.txt
 
-ERR_OPEN_FILE inside pipex function? Fails because the output of the error message is not exactly the same as bash (KO STDERR
+ERR_OPEN_FILE inside pipex function? Fails because the output of the error message is not exactly the same as bash (KO STDERR)
