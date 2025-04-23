@@ -5,6 +5,6 @@ cp /Users/tbui-quo/francinette/temp/pipex/pipexMedic/mandatory.log .
 < input.txt grep Hello | awk '{count++} END {print count}' > output.txt
 ./pipex input.txt "grep Hello" "awk '{count++} END {print count}'" output.txt
 ./pipex input.txt "grep Hello" "wc -w" output.txt
-
+valgrind --leak-check=full --show-leak-kinds=all ./pipex input.txt "grep Hello" "wc -w" output.txt
 
 ERR_OPEN_FILE inside pipex function? Fails because the output of the error message is not exactly the same as bash (KO STDERR)
